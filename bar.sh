@@ -102,7 +102,7 @@ battery(){
 			fi
 			xbacklight -set 60
 	fi
-	echo -e " battery $capacity%$icon_battery"
+	echo -e " battery$capacity%$icon_battery"
 }
 
 wifi(){
