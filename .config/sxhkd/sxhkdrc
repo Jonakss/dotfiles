@@ -1,0 +1,59 @@
+super + r
+ rofi -show run
+
+super + e
+  xfe
+
+super + Return
+ xterm
+
+XF86AudioRaiseVolume
+ amixer sset Master $( expr $(amixer sget Master | sed ':a;N;$!ba;s/\n/ /g' | cut -d " " -f 28 ) + 5)
+
+XF86AudioLowerVolume
+ amixer sset Master $( expr $(amixer sget Master | sed ':a;N;$!ba;s/\n/ /g' | cut -d " " -f 28 ) - 5)
+
+XF86MonBrightnessUp
+ xbacklight -inc 2
+
+XF86MonBrightnessDown
+ xbacklight -dec 2
+
+XF86AudioMute
+ amixer sset Master toggle
+
+XF86AudioPlay
+ dbus-send --print-reply --dest=org.mpris.MediaPlayer2.spotify /org/mpris/MediaPlayer2 org.mpris.MediaPlayer2.Player.PlayPause > /dev/null
+
+XF86AudioNext
+ dbus-send --print-reply --dest=org.mpris.MediaPlayer2.spotify /org/mpris/MediaPlayer2 org.mpris.MediaPlayer2.Player.Next > /dev/null
+
+XF86AudioPrev
+ dbus-send --print-reply --dest=org.mpris.MediaPlayer2.spotify /org/mpris/MediaPlayer2 org.mpris.MediaPlayer2.Player.Previous > /dev/null
+
+XF86AudioStop
+ dbus-send --print-reply --dest=org.mpris.MediaPlayer2.spotify /org/mpris/MediaPlayer2 org.mpris.MediaPlayer2.Player.Stop > /dev/null
+
+alt + F4
+ bspc node -c
+
+alt + Tab
+ bspc node last -f
+
+super + Tab
+ bspc desktop last -f
+
+super + button{1-3}
+  bspc pointer -g {move,resize_side,resize_corner}
+
+super + {_,shift + } {1-9,0}
+  bspc {desktop -f,node -d} ^{1-9,10}
+
+~button1
+ bspc pointer -g focus
+
+super + shift + button2
+ bspc node -c
+
+super + @button{1-3}
+ bspc pointer -u

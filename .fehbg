@@ -1,0 +1,2 @@
+#!/bin/sh
+feh  --bg-fill '/home/jcorreapaiva/Imagenes/3BD.png' 

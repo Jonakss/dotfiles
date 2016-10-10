@@ -1,0 +1,45 @@
+#!/bin/bash
+
+Workspaces() {
+  urgent='#800000'
+  free='#50ffffff'
+  used='#ffffff'
+  underline='#FA0012'
+  WKS=5
+
+  for i in {2..6}
+  do
+    n=$(expr $i - 1)
+    SPACE=$(bspc control --get-status | cut -d ":" -f $i)
+    if [[ "$SPACE" == *u* ]] #Urgency
+    then
+          echo %{A:bspc desktop -f ^$n:}%{F$urgent} ${SPACE:1} %{A}
+    elif [[ "$SPACE" == *O* ]] #Current Workspace and used
+    then
+          echo %{A:bspc desktop -f ^$n:}%{F$used}%{U$underline+u} ${SPACE:1} %{U-u}%{A}
+    elif [[ "$SPACE" == *U* ]] #Current Workspace and Urgent
+    then
+              echo %{A:bspc desktop -f ^$n:}%{U$underline+u}%{F$urgent} ${SPACE:1} %{U-u}%{A}
+    elif [[ "$SPACE" == *F* ]] #Current Workspace and Free
+    then
+              echo %{A:bspc desktop -f ^$n:}%{U$underline+u}%{F$free} ${SPACE:1} %{U-u}%{A}
+    elif [[ "$SPACE" == *o* ]] #Not current and used Workspace
+    then
+      echo %{A:bspc desktop -f ^$n:}%{F$used} ${SPACE:1} %{A}
+     else # Free Workspace
+        echo %{A:bspc desktop -f ^$n:}%{F$free} ${SPACE:1} %{A}
+     fi
+  done
+
+  MODE=$(bspc control --get-status | cut -d ":" -f $(expr $WKS + 2))
+  echo %{F$free} ${MODE:1} %{A}
+}
+
+Title() {
+  title=`xtitle`
+  echo $title
+}
+
+while true; do
+   echo -e %{l} %{A:~/scripts/power/power.sh:}%{F#0067CA}'\ue00e'%{A} $(Workspaces) %{c}$(Title) %{r}date
+done | lemonbar -u 2 -f '-*-terminus-medium-r-normal-*-12-*-*-*-c-*-*-1' -f '-wuncon-siji-medium-r-normal--10-100-75-75-c-80-iso10646-1' | while read line; do eval "$line"; done
